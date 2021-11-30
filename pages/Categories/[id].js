@@ -1,35 +1,42 @@
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 import React, { useState } from "react";
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { useQuery, ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import Button from "@mui/material/Button";
+import { useRouter } from "next/router";
+// import Card from "@material-ui/core/Card";
+import CustomCard from "../../components/CustomCard";
 import Link from "next/link";
-import Navbar from "../components/Navbar.jsx";
+import Navbar from "../../components/Navbar.jsx";
 
-export default function Home(items) {
-  const initialState = items;
-  const [categories, setCategories] = useState(initialState.categories);
-  console.log(initialState);
-
+export default function Category({ categories }) {
+  const router = useRouter();
+  // const { data } = useQuery(QUERY, {
+  //   variables: {
+  //     categoryId: props.id,
+  //   },
+  // });
+  // const product = data.category.products.items;
+  // console.log(product);
+  // console.log(categories.products.items[0]);
   return (
     <div>
       <Navbar />
-
       <div className={styles.container}>
         <h1 className={styles.title}>Welcome to California</h1>
-        <h2 className={styles.title}>Choose what do you want to buy</h2>
 
         <div className={styles.cardMap}>
           {categories.map((categories) => {
             return (
-              <Link href={`/Categories/${categories.id}`}>
-                <div key={categories.id}>
-                  <div className={styles.card}>
+              <div key={categories.id}>
+                <div className={styles.card}>
+                  <Link href={`/Categories/Details/${categories.url_key}`}>
                     <h2>{categories.name}</h2>
-                  </div>
+                  </Link>
+                  <img height={300} width={300} src={categories.image.url} />
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>
@@ -63,19 +70,32 @@ export async function getServerSideProps(context) {
   });
   const { data } = await client.query({
     query: gql`
-      query {
-        categoryList(filters: {}) {
+      query getCategoryProduct($categoryId: Int!) {
+        category(id: $categoryId) {
           id
           name
-          image
-          include_in_menu
+          products {
+            items {
+              __typename
+              id
+              name
+              image {
+                url
+              }
+              url_key
+            }
+          }
         }
       }
     `,
+    variables: {
+      categoryId: context.params.id,
+    },
   });
+  // console.log(data.categoryList);
   return {
     props: {
-      categories: data.categoryList,
+      categories: data.category.products.items,
     },
   };
 }

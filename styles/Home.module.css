@@ -28,11 +28,6 @@
   flex-grow: 1;
 }
 
-.title a {
-  color: #0070f3;
-  text-decoration: none;
-}
-
 .title a:hover,
 .title a:focus,
 .title a:active {
@@ -42,7 +37,7 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 4rem;
+  padding: 2rem;
 }
 
 .title,
@@ -88,7 +83,6 @@
 .card:hover,
 .card:focus,
 .card:active {
-  color: #0070f3;
   border-color: #0070f3;
 }
 
@@ -113,4 +107,58 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+.cardMap {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-evenly; */
+}
+
+.card {
+  margin: 5px;
+  color: white;
+  background-color: black;
+  box-shadow: 10px 10px 51px -6px rgba(0, 0, 0, 0.39);
+  -webkit-box-shadow: 10px 10px 51px -6px rgba(0, 0, 0, 0.39);
+  -moz-box-shadow: 10px 10px 51px -6px rgba(0, 0, 0, 0.39);
+  cursor: pointer;
+}
+
+.text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dialog {
+  box-shadow: 0 8px 6px -6px black;
+  position: static;
+
+  top: 10%;
+}
+
+.image {
+  width: 100%;
+}
+
+.cardCart {
+  margin: 1rem;
+  padding: 1.5rem;
+  text-align: left;
+  text-decoration: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  max-width: 300px;
+  color: white;
+  background-color: black;
+  box-shadow: 10px 10px 51px -6px rgba(0, 0, 0, 0.39);
+  -webkit-box-shadow: 10px 10px 51px -6px rgba(0, 0, 0, 0.39);
+  -moz-box-shadow: 10px 10px 51px -6px rgba(0, 0, 0, 0.39);
+}
+
+.buttonCard {
+  text-align: right;
 }
