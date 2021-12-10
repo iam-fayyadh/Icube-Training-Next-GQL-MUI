@@ -21,7 +21,7 @@ export default function Category({ categories }) {
   // console.log(product);
   // console.log(categories.products.items[0]);
   return (
-    <div>
+    <div className={styles.layout}>
       <Navbar />
       <div className={styles.container}>
         <h1 className={styles.title}>Welcome to California</h1>
@@ -30,12 +30,12 @@ export default function Category({ categories }) {
           {categories.map((categories) => {
             return (
               <div key={categories.id}>
-                <div className={styles.card}>
-                  <Link href={`/Categories/Details/${categories.url_key}`}>
+                <Link href={`/Categories/Details/${categories.url_key}`}>
+                  <div className={styles.card}>
                     <h2>{categories.name}</h2>
-                  </Link>
-                  <img height={300} width={300} src={categories.image.url} />
-                </div>
+                    <img height={250} width={250} src={categories.image.url} />
+                  </div>
+                </Link>
               </div>
             );
           })}

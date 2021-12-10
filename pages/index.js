@@ -6,6 +6,7 @@ import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import Navbar from "../components/Navbar.jsx";
+import Wave from "../assets/blob-scene-haikei.svg";
 
 export default function Home(items) {
   const initialState = items;
@@ -13,20 +14,20 @@ export default function Home(items) {
   console.log(initialState);
 
   return (
-    <div>
+    <div className={styles.layout}>
       <Navbar />
 
       <div className={styles.container}>
         <h1 className={styles.title}>Welcome to California</h1>
         <h2 className={styles.title}>Choose what do you want to buy</h2>
 
-        <div className={styles.cardMap}>
+        <div className={styles.cardMapHome}>
           {categories.map((categories) => {
             return (
               <Link href={`/Categories/${categories.id}`}>
                 <div key={categories.id}>
                   <div className={styles.card}>
-                    <h2>{categories.name}</h2>
+                    <h2 className={styles.cardText}>{categories.name}</h2>
                   </div>
                 </div>
               </Link>

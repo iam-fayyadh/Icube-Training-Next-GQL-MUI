@@ -41,15 +41,15 @@ export default function Cart() {
   return (
     <div>
       <Navba />
-      <div className="cardMap">
-        {Cart.map((Cart, index) => {
-          let parse = ReactHtmlParser(Cart.description.html);
-          return (
-            <div key={index}>
-              <div>
+      <div className={styles.container}>
+        <div className={styles.cardMap}>
+          {Cart.map((Cart, index) => {
+            let parse = ReactHtmlParser(Cart.description.html);
+            return (
+              <div key={index}>
                 <div className={styles.cardCart}>
                   <h2>{Cart.name}</h2>
-                  <img height={300} width={300} src={Cart.image.url} />
+                  <img height={250} width={250} src={Cart.image.url} />
                   <h2>Description</h2>
                   {/* <p>{categories.description.html}</p> */}
                   {parse}
@@ -59,13 +59,15 @@ export default function Cart() {
                     {Cart.price_range.maximum_price.final_price.value}
                     ,-
                   </p>
-                  <br />
-                  <DeleteIcon onClick={() => handleDeleteCart(index)} />
+                  <DeleteIcon
+                    className={styles.btnDelete}
+                    onClick={() => handleDeleteCart(index)}
+                  />
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,6 @@
+import "../styles/globals.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import ColorProvider from "../components/ColorProvider";
 // Apollo Client Configuration
 
 const client = new ApolloClient({
@@ -9,7 +11,9 @@ const client = new ApolloClient({
 function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      <ColorProvider>
+        <Component {...pageProps} />
+      </ColorProvider>
     </ApolloProvider>
   );
 }

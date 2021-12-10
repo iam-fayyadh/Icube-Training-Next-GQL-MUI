@@ -63,69 +63,76 @@ export default function CategoryDetails({ categories }) {
     <div>
       <Navbar />
       <div className={styles.container}>
-        <main className={styles.main}>
-          <h1 className={styles.title}>Welcome to California</h1>
+        <h1 className={styles.title}>Welcome to California</h1>
 
-          <div className={styles.cardMap}>
-            <div>
-              {categories.map((categories) => {
-                let parse = ReactHtmlParser(categories.description.html);
-                return (
-                  <div key={categories.id}>
-                    <div className={styles.card}>
+        <div className={styles.cardMap}>
+          <div>
+            {categories.map((categories) => {
+              let parse = ReactHtmlParser(categories.description.html);
+              return (
+                <div key={categories.id}>
+                  <div className={styles.cardDetail}>
+                    <div className={styles.namePic}>
                       <h2>{categories.name}</h2>
                       <img
                         height={300}
                         width={300}
                         src={categories.image.url}
                       />
-                      <h2>Description</h2>
-                      {/* <p>{categories.description.html}</p> */}
-                      {parse}
-                      <h3>Price</h3>
-                      <p>
-                        Rp.
-                        {categories.price_range.maximum_price.final_price.value}
-                        ,-
-                      </p>
+                    </div>
+                    <div className={styles.des}>
+                      <div>
+                        <h2>Description</h2>
+                        {/* <p>{categories.description.html}</p> */}
+                        {parse}
+                      </div>
+                      <div className={styles.priBut}>
+                        <h2>Price</h2>
+                        <h1>
+                          Rp.
+                          {
+                            categories.price_range.maximum_price.final_price
+                              .value
+                          }
+                          ,-
+                        </h1>
 
-                      <br />
-
-                      <Stack spacing={2} sx={{ width: "100%" }}>
-                        <Butt
-                          variant="contained"
-                          onClick={() => {
-                            {
-                              handleClick();
-                            }
-                            {
-                              handleAddCart(categories);
-                            }
-                          }}
-                        >
-                          + Add To Chart
-                        </Butt>
-                        <Snackbar
-                          open={open}
-                          autoHideDuration={6000}
-                          onClose={handleClose}
-                        >
-                          <Alert
-                            onClose={handleClose}
-                            severity="success"
-                            sx={{ width: "100%" }}
+                        <Stack spacing={2} sx={{ width: "100%" }}>
+                          <Butt
+                            variant="contained"
+                            onClick={() => {
+                              {
+                                handleClick();
+                              }
+                              {
+                                handleAddCart(categories);
+                              }
+                            }}
                           >
-                            Product has Added to Cart!
-                          </Alert>
-                        </Snackbar>
-                      </Stack>
+                            + Add To Chart
+                          </Butt>
+                          <Snackbar
+                            open={open}
+                            autoHideDuration={6000}
+                            onClose={handleClose}
+                          >
+                            <Alert
+                              onClose={handleClose}
+                              severity="success"
+                              sx={{ width: "100%" }}
+                            >
+                              Product has Added to Cart!
+                            </Alert>
+                          </Snackbar>
+                        </Stack>
+                      </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
-        </main>
+        </div>
 
         <footer className={styles.footer}>
           <a
