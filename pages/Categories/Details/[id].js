@@ -12,7 +12,9 @@ import Butt from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
 import MuiAlert from "@mui/material/Alert";
+import useStyles from "../../../styles";
 import Link from "next/link";
+import { GET_PRODUCT_DETAIL } from "../../../services";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -20,6 +22,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function CategoryDetails({ categories }) {
   const router = useRouter();
+  const classes = useStyles();
   const [Cart, setCart] = useState([]);
   const [open, setOpen] = React.useState(false);
 
@@ -33,6 +36,9 @@ export default function CategoryDetails({ categories }) {
       setCart(categories);
     }
   }, []);
+  const { data, loading, error } = GET_PRODUCT_DETAIL(router.query.id);
+  if (loading) return <></>;
+  if (error) return <>error</>;
 
   const handleClick = () => {
     setOpen(true);
@@ -65,14 +71,14 @@ export default function CategoryDetails({ categories }) {
       <div className={styles.container}>
         <h1 className={styles.title}>Welcome to California</h1>
 
-        <div className={styles.cardMap}>
+        <div className={classes.cardMap}>
           <div>
-            {categories.map((categories) => {
+            {data.products.items.map((categories) => {
               let parse = ReactHtmlParser(categories.description.html);
               return (
                 <div key={categories.id}>
                   <div className={styles.cardDetail}>
-                    <div className={styles.namePic}>
+                    <div className={classes.namePic}>
                       <h2>{categories.name}</h2>
                       <img
                         height={300}
@@ -80,13 +86,13 @@ export default function CategoryDetails({ categories }) {
                         src={categories.image.url}
                       />
                     </div>
-                    <div className={styles.des}>
+                    <div className={classes.des}>
                       <div>
                         <h2>Description</h2>
                         {/* <p>{categories.description.html}</p> */}
                         {parse}
                       </div>
-                      <div className={styles.priBut}>
+                      <div className={classes.priBut}>
                         <h2>Price</h2>
                         <h1>
                           Rp.
@@ -156,52 +162,14 @@ export default function CategoryDetails({ categories }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const client = new ApolloClient({
-    uri: "https://b2cdemo.getswift.asia/graphql/",
-    cache: new InMemoryCache(),
-  });
-  const { data } = await client.query({
-    query: gql`
-      query getProduct($urlKey: String!) {
-        products(filter: { url_key: { eq: $urlKey } }) {
-          items {
-            id
-            name
-            __typename
-            description {
-              html
-            }
-            image {
-              url
-            }
-            price_range {
-              maximum_price {
-                final_price {
-                  value
-                }
-                regular_price {
-                  value
-                }
-              }
-            }
-            qty_available
-            rating_summary
-            categories {
-              name
-            }
-          }
-        }
-      }
-    `,
-    variables: {
-      urlKey: context.params.id,
-    },
-  });
+// export async function getServerSideProps(context) {
+//   const { data } = await client.query({
+//     query: GET_PRODUCT_DETAIL,
+//   });
 
-  return {
-    props: {
-      categories: data.products.items,
-    },
-  };
-}
+//   return {
+//     props: {
+//       categories: data.products.items,
+//     },
+//   };
+// }

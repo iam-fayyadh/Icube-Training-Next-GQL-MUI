@@ -7,27 +7,26 @@ import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
 // import Card from "@material-ui/core/Card";
 import CustomCard from "../../components/CustomCard";
+import useStyles from "../../styles";
 import Link from "next/link";
 import Navbar from "../../components/Navbar.jsx";
+import { GET_CATEGORY_PRODUCT } from "../../services/";
 
 export default function Category({ categories }) {
   const router = useRouter();
-  // const { data } = useQuery(QUERY, {
-  //   variables: {
-  //     categoryId: props.id,
-  //   },
-  // });
-  // const product = data.category.products.items;
-  // console.log(product);
-  // console.log(categories.products.items[0]);
+  const classes = useStyles();
+  const { data, loading, error } = GET_CATEGORY_PRODUCT(router.query.id);
+  if (loading) return <></>;
+  if (error) return <>error</>;
+
   return (
     <div className={styles.layout}>
       <Navbar />
       <div className={styles.container}>
         <h1 className={styles.title}>Welcome to California</h1>
 
-        <div className={styles.cardMap}>
-          {categories.map((categories) => {
+        <div className={classes.cardMap}>
+          {data.category.products.items.map((categories) => {
             return (
               <div key={categories.id}>
                 <Link href={`/Categories/Details/${categories.url_key}`}>
@@ -63,39 +62,14 @@ export default function Category({ categories }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const client = new ApolloClient({
-    uri: "https://b2cdemo.getswift.asia/graphql/",
-    cache: new InMemoryCache(),
-  });
-  const { data } = await client.query({
-    query: gql`
-      query getCategoryProduct($categoryId: Int!) {
-        category(id: $categoryId) {
-          id
-          name
-          products {
-            items {
-              __typename
-              id
-              name
-              image {
-                url
-              }
-              url_key
-            }
-          }
-        }
-      }
-    `,
-    variables: {
-      categoryId: context.params.id,
-    },
-  });
-  // console.log(data.categoryList);
-  return {
-    props: {
-      categories: data.category.products.items,
-    },
-  };
-}
+// export async function getServerSideProps(context) {
+//   const { data } = await client.query({
+//     query: GET_CATEGORY_PRODUCT(context.params.id),
+//   });
+
+//   return {
+//     props: {
+//       categories: data.category.products.items,
+//     },
+//   };
+// }

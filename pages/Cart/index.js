@@ -5,9 +5,11 @@ import ReactHtmlParser from "react-html-parser";
 import Navba from "../../components/Navbar.jsx";
 import styles from "../../styles/Home.module.css";
 import DeleteIcon from "@mui/icons-material/Delete";
+import useStyles from "../../styles";
 
 export default function Cart() {
   const router = useRouter();
+  const classes = useStyles();
   const [Cart, setCart] = useState([]);
   const [isDelete, setIsDelete] = useState(false);
 
@@ -60,7 +62,7 @@ export default function Cart() {
                     ,-
                   </p>
                   <DeleteIcon
-                    className={styles.btnDelete}
+                    className={classes.btnDelete}
                     onClick={() => handleDeleteCart(index)}
                   />
                 </div>

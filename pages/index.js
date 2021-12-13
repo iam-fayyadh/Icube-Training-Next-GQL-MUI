@@ -1,17 +1,20 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import useStyles from "../styles";
 import React, { useState } from "react";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import Navbar from "../components/Navbar.jsx";
 import Wave from "../assets/blob-scene-haikei.svg";
+import { client } from "./_app.js";
+import { GET_CATEGORY_LIST } from "../services/schema";
+import { makeStyles } from "@mui/styles";
 
 export default function Home(items) {
   const initialState = items;
   const [categories, setCategories] = useState(initialState.categories);
-  console.log(initialState);
 
   return (
     <div className={styles.layout}>
@@ -58,21 +61,8 @@ export default function Home(items) {
 }
 
 export async function getServerSideProps(context) {
-  const client = new ApolloClient({
-    uri: "https://b2cdemo.getswift.asia/graphql/",
-    cache: new InMemoryCache(),
-  });
   const { data } = await client.query({
-    query: gql`
-      query {
-        categoryList(filters: {}) {
-          id
-          name
-          image
-          include_in_menu
-        }
-      }
-    `,
+    query: GET_CATEGORY_LIST,
   });
   return {
     props: {

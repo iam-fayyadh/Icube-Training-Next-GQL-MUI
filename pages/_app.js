@@ -3,7 +3,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import ColorProvider from "../components/ColorProvider";
 // Apollo Client Configuration
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri: "https://b2cdemo.getswift.asia/graphql",
   cache: new InMemoryCache(),
 });
